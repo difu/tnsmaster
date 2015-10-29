@@ -2,6 +2,8 @@ from unittest import TestCase
 
 from antlr4 import *
 
+import os
+
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
 from tnsnames.serviceFinder import ServiceFinder
@@ -13,7 +15,8 @@ class TestServiceFinder(TestCase):
     _tnsnames_file = None
 
     def setUp(self):
-        self._tnsnames_file = "testFiles/tnsnames.ora"
+        path = os.path.dirname(os.path.abspath(__file__))
+        self._tnsnames_file = '{0}/testFiles/tnsnames.ora'.format(path)
 
     def test_get_aliases(self):
         input_file_stream = FileStream(self._tnsnames_file)
