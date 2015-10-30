@@ -12,6 +12,7 @@ __author__ = 'dirkfuchs'
 
 
 class TestServiceFinder(TestCase):
+
     _tnsnames_file = None
 
     def setUp(self):
