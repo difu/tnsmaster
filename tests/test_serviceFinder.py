@@ -1,8 +1,7 @@
 from unittest import TestCase
-
-from antlr4 import *
-
 import os
+
+from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
