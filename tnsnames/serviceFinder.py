@@ -3,6 +3,7 @@ from tnsnames.tnsnamesParser import tnsnamesParser
 
 
 class ServiceFinder(tnsnamesListener):
+
     def __init__(self):
         self._aliases = []
 
