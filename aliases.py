@@ -1,6 +1,6 @@
 import sys
 
-from antlr4 import *
+from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
