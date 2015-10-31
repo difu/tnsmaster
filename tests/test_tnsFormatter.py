@@ -5,7 +5,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
-from tnsnames.tnsnamelineformatter import TnsnameLineFormatter
+from tnsnames.tnsnameslineformatter import TnsnameLineFormatter
 
 __author__ = 'dirkfuchs'
 

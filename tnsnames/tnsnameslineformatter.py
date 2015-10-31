@@ -1,19 +1,14 @@
-from tnsnames.tnsnamesListener import tnsnamesListener
 from tnsnames.tnsnamesParser import tnsnamesParser
+from tnsnames.tnsnamesformatter import TnsnamesFormatter
 
 
-class TnsnameLineFormatter(tnsnamesListener):
+class TnsnameLineFormatter(TnsnamesFormatter):
     def __init__(self):
-        self._level = 0
-        self._indents = 4
         self._lines = []
 
     @property
     def get_lines(self):
         return self._lines
-
-    def set_indents(self, indents):
-        self._indents = indents
 
     # Enter a parse tree produced by tnsnamesParser#tns_entry.
     def enterTns_entry(self, ctx: tnsnamesParser.Tns_entryContext):
