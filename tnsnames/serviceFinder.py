@@ -1,8 +1,8 @@
-from tnsnames.tnsnamesListener import tnsnamesListener
+from tnsnames.tnsnamesListener import TnsnamesListener
 from tnsnames.tnsnamesParser import tnsnamesParser
 
 
-class ServiceFinder(tnsnamesListener):
+class ServiceFinder(TnsnamesListener):
 
     def __init__(self):
         self._aliases = []

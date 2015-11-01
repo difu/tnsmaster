@@ -8,7 +8,7 @@ else:
 
 
 # This class defines a complete listener for a parse tree produced by tnsnamesParser.
-class tnsnamesListener(ParseTreeListener):
+class TnsnamesListener(ParseTreeListener):
     # Enter a parse tree produced by tnsnamesParser#tnsnames.
     def enterTnsnames(self, ctx: tnsnamesParser.TnsnamesContext):
         pass

@@ -1,6 +1,7 @@
-from tnsnames import tnsnamesListener
+from tnsnames.tnsnamesListener import TnsnamesListener
 
 
-# Baseclass for all format classes
-class TnsnamesFormatter(tnsnamesListener):
-    pass
+# Base class for all format classes
+class TnsnamesFormatter(TnsnamesListener):
+    def __init__(self):
+        pass
