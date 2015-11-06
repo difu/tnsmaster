@@ -4,6 +4,7 @@ from tnsnames.tnsnamesformatter import TnsnamesFormatter
 
 class TnsnameLineFormatter(TnsnamesFormatter):
     def __init__(self):
+        super().__init__()
         self._lines = []
 
     @property
