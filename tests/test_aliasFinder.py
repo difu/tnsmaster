@@ -1,16 +1,16 @@
-from unittest import TestCase
 import os
+from unittest import TestCase
 
 from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
+from tnsnames.aliasFinder import AliasFinder
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
-from tnsnames.serviceFinder import ServiceFinder
 
 __author__ = 'dirkfuchs'
 
 
-class TestServiceFinder(TestCase):
+class TestAliasFinder(TestCase):
 
     _tnsnames_file = None
 
@@ -26,7 +26,7 @@ class TestServiceFinder(TestCase):
         parser = tnsnamesParser(stream)
         tree = parser.tnsnames()
 
-        listener = ServiceFinder()
+        listener = AliasFinder()
         walker = ParseTreeWalker()
         walker.walk(listener, tree)
         expected_aliases = ['LSNR_FRED', 'LSNR_WILMA', 'lsnr_barney', 'alias_1', 'alias_2.world',

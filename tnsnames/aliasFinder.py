@@ -2,7 +2,7 @@ from tnsnames.tnsnamesListener import TnsnamesListener
 from tnsnames.tnsnamesParser import tnsnamesParser
 
 
-class ServiceFinder(TnsnamesListener):
+class AliasFinder(TnsnamesListener):
 
     def __init__(self):
         self._aliases = []
