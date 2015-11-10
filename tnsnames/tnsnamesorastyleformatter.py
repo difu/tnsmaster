@@ -229,7 +229,6 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
 
     # Enter a parse tree produced by tnsnamesParser#address_list.
     def enterAddress_list(self, ctx: tnsnamesParser.Address_listContext):
-        print("Debug : " + ctx.getRuleContext().getText())
         line_string = self.get_indents_string() + "(" + tnsnamesParser.ruleNames[
             tnsnamesParser.RULE_address_list] + "="
         self._level += 1
