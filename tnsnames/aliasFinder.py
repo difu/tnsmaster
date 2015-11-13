@@ -1,4 +1,4 @@
-from tnsnames.TnsnamesListener import TnsnamesListener
+from tnsnames.tnsnamesListener import TnsnamesListener
 from tnsnames.tnsnamesParser import tnsnamesParser
 
 
