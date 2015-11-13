@@ -7,7 +7,6 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         super().__init__()
         self._current_line = ""
         self._level = 0
-        self._lines = []
         self._indents = 4
 
     def get_indents_string(self):
@@ -24,10 +23,6 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         """
         self._lines.append(self.get_indents_string() + self._current_line)
         self._current_line = ""
-
-    @property
-    def get_lines(self):
-        return self._lines
 
     # Enter a parse tree produced by tnsnamesParser#tnsnames.
     def enterTnsnames(self, ctx: tnsnamesParser.TnsnamesContext):
