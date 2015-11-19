@@ -5,6 +5,7 @@ class TnsnamesStack:
     def contains_entry(self, entry):
         """
         Returns True, if stack contains entry, False otherwise
+        :return: True, if stack contains entry, False otherwise
         :rtype: bool
         """
         if entry in self._stack:
