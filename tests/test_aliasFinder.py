@@ -30,5 +30,5 @@ class TestAliasFinder(TestCase):
         walker = ParseTreeWalker()
         walker.walk(listener, tree)
         expected_aliases = ['LSNR_FRED', 'LSNR_WILMA', 'lsnr_barney', 'alias_1', 'alias_2.world',
-                            'alias3.dunbar-it.co.uk']
+                            'alias3.dunbar-it.co.uk', 'someother_alias', 'someother_alias2']
         self.assertListEqual(listener.get_aliases, expected_aliases)

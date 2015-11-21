@@ -1,5 +1,5 @@
-from unittest import TestCase
 import os
+from unittest import TestCase
 
 from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
@@ -28,4 +28,4 @@ class TestTnsFormatter(TestCase):
         listener = TnsnameLineFormatter()
         walker = ParseTreeWalker()
         walker.walk(listener, tree)
-        assert len(listener.get_lines) == 4
+        assert len(listener.get_lines) == 6
