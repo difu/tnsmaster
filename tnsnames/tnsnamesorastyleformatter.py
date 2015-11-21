@@ -73,7 +73,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
 
     # Enter a parse tree produced by tnsnamesParser#d_retry_count.
     def enterD_retry_count(self, ctx: tnsnamesParser.D_retry_countContext):
-        super().exitD_retry_count(ctx)
+        super().enterD_retry_count(ctx)
         self._current_line = ctx.getText()
         self.append_current_line()
 
