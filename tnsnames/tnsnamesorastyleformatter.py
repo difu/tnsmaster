@@ -57,7 +57,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
 
     # Enter a parse tree produced by tnsnamesParser#d_sdu.
     def enterD_sdu(self, ctx: tnsnamesParser.D_sduContext):
-        super().enterD_sdu(self)
+        super().enterD_sdu(ctx)
         self._current_line = ctx.getText()
         self.append_current_line()
 
