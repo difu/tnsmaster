@@ -7,8 +7,7 @@ Toolset for mastering tnsnames.ora
 <a href="https://travis-ci.org/difu/tnsmaster"><img src="https://travis-ci.org/difu/tnsmaster.svg"></a>
 
 
-**At the moment *tnsmaster* is in the development phase. Not all features are working. But be encouraged to
-participate! **
+**At the moment _tnsmaster_ is in the development phase. Not all features are working. But be encouraged to participate!**
 
 **tnsmaster** is aimed to be the swiss army knife for creating and maintaining tnsname.ora files.
 
