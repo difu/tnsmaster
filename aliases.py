@@ -2,9 +2,9 @@ import sys
 
 from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
+from tnsnames.aliasFinder import AliasFinder
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnamesParser import tnsnamesParser
-from tnsnames.serviceFinder import ServiceFinder
 
 
 def main(argv):
@@ -14,7 +14,7 @@ def main(argv):
     parser = tnsnamesParser(stream)
     tree = parser.tnsnames()
 
-    listener = ServiceFinder()
+    listener = AliasFinder()
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
     for alias in listener.get_aliases:

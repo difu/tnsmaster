@@ -12,7 +12,7 @@ setup(
     author_email="somewhere@over-the-rain.bow",
     url="https://github.com/difu/tnsmaster",
     packages=["tnsnames"],
-    data_files=[("tests", ["__init__.py", "test_serviceFinder.py",
+    data_files=[("tests", ["__init__.py", "test_aliasFinder.py",
                            "testFiles/tnsnames.ora"])],
     classifiers=[
         "Development Status :: 1 - Planning",
