@@ -1,6 +1,7 @@
+from antlr4 import ParserRuleContext
+
 from tnsnames.tnsnamesParser import tnsnamesParser
 from tnsnames.tnsnamesformatter import TnsnamesFormatter
-from antlr4 import ParserRuleContext
 
 
 class TnsnameOraStyleFormatter(TnsnamesFormatter):
@@ -24,7 +25,47 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         ret_string = " " * self._indents * self._level
         return ret_string
 
+    def set_ignore_keyword_case(self, ignore: bool):
+        """
+        If set to true, the parser will not change upper/lower case spelling of the keyword
+
+        :type ignore: bool
+        """
+        self._ignore_keyword_case = ignore
+
+    def set_ignore_value_case(self, ignore: bool):
+        """
+        If set to true, the parser will not change upper/lower case spelling of the value
+
+        :type ignore: bool
+        """
+        self._ignore_value_case = ignore
+
+    def set_uppercase_keywords(self, uppercase: bool):
+        """
+        If set to true the parser will uppercase all keywords
+        Note: you have to set set_ignore_keywords_case to true
+
+        :type uppercase: bool
+        """
+        self._uppercase_keywords = uppercase
+
+    def set_uppercase_value(self, uppercase: bool):
+        """
+        If set to true the parser will uppercase all values
+        Note: you have to set set_ignore_values_case to true
+
+        :type uppercase: bool
+        """
+        self._uppercase_values = uppercase
+
+
     def set_indents(self, indents):
+        """
+        Sets the number of indents of a block
+
+        :param indents: number of indents
+        """
         self._indents = indents
 
     def append_current_line(self):
