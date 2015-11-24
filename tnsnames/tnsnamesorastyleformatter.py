@@ -288,3 +288,37 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Exit a parse tree produced by tnsnamesParser#port.
     def exitPort(self, ctx: tnsnamesParser.PortContext):
         super().exitPort(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#cd_service_name.
+    def enterCd_service_name(self, ctx: tnsnamesParser.Cd_service_nameContext):
+        super().enterCd_service_name(ctx)
+        self._current_line += self.get_key_value_pattern(ctx)
+        self.append_current_line()
+
+    # Exit a parse tree produced by tnsnamesParser#cd_service_name.
+    def exitCd_service_name(self, ctx: tnsnamesParser.Cd_service_nameContext):
+        super().exitCd_service_name(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#cd_server.
+    def enterCd_server(self, ctx: tnsnamesParser.Cd_serverContext):
+        super().enterCd_server(ctx)
+        self._current_line += self.get_key_value_pattern(ctx)
+        self.append_current_line()
+
+    # Exit a parse tree produced by tnsnamesParser#cd_server.
+    def exitCd_server(self, ctx: tnsnamesParser.Cd_serverContext):
+        super().exitCd_server(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#connect_data.
+    def enterConnect_data(self, ctx: tnsnamesParser.Connect_dataContext):
+        super().enterConnect_data(ctx)
+        line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
+        self._level += 1
+        self._lines.append(line_string)
+
+    # Exit a parse tree produced by tnsnamesParser#connect_data.
+    def exitConnect_data(self, ctx: tnsnamesParser.Connect_dataContext):
+        super().exitConnect_data(ctx)
+        self._level -= 1
+        line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
+        self._lines.append(line_string)
