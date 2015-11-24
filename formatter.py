@@ -15,13 +15,15 @@ def main():
     parser.add_argument("-f", "--format", choices=[Format.oneLine.name, Format.oracle.name],
                         help="format to be applied",
                         default=Format.oracle.name)
-    parser.add_argument("--lowerkeys", action='store_true', help="lowercase keys",
+    parser.add_argument("--lowerkeys", action='store_true',
+                        help="lowercase keys (case handling for keys must be activated!)",
                         default=False)
-    parser.add_argument("--lowervalues", action='store_true', help="lowercase keys",
+    parser.add_argument("--lowervalues", action='store_true',
+                        help="lowercase keys (case handling for values must be activated!)",
                         default=False)
-    parser.add_argument("--handlekeycase", action='store_true', help="ToDo",
+    parser.add_argument("--handlekeycase", action='store_true', help="activate case handling for keys",
                         default=False)
-    parser.add_argument("--handlevaluecase", action='store_true', help="ToDo",
+    parser.add_argument("--handlevaluecase", action='store_true', help="activate case handling for values",
                         default=False)
 
     args = parser.parse_args()
