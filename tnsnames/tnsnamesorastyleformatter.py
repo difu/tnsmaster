@@ -20,6 +20,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         """
         get a string containing whitespaces corresponding to the stack level and number of indents per level
 
+        :rtype: str
         :return: Returns whitespace string
         """
         ret_string = " " * self._indents * self._level
@@ -29,7 +30,6 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         """
         If set to true, the parser will not change upper/lower case spelling of the keyword
 
-        :type ignore: bool
         """
         self._ignore_keyword_case = ignore
 
@@ -58,7 +58,6 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         :type uppercase: bool
         """
         self._uppercase_values = uppercase
-
 
     def set_indents(self, indents):
         """
@@ -105,16 +104,71 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
                     _value = _value.upper()
                 else:
                     _value = _value.lower()
-
-            return str(ctx.getChild(0)) + _key + str(ctx.getChild(2)) + _value + str(ctx.getChild(4))
+            _ret_string = str(ctx.getChild(0)) + _key + str(ctx.getChild(2)) + _value + str(ctx.getChild(4))
+            return _ret_string
         raise Exception("Not a key value ctx")
+
+    def get_key_opening_pattern(self, ctx: ParserRuleContext):
+        """
+        returns the key opening pattern, like (address=
+        :param ctx: the ParserRuleContext
+        :return formatted key opening string
+        :rtype str
+        """
+        _count = ctx.getChildCount()
+        if _count < 5:
+            raise Exception("Not a key opening ctx")
+        _key = str(ctx.getChild(1))
+        if not self._ignore_keyword_case:
+            if self._uppercase_keywords:
+                _key = _key.upper()
+            else:
+                _key = _key.lower()
+        _ret_string = str(ctx.getChild(0)) + _key + str(ctx.getChild(2))
+        return _ret_string
+
+    def get_key_closing_pattern(self, ctx: ParserRuleContext):
+        """
+        returns the key closing pattern
+        :param ctx: the ParserRuleContext
+        :return formatted key closing string
+        :rtype str
+        """
+        _count = ctx.getChildCount()
+        if _count < 5:
+            raise Exception("Not a key closing ctx")
+        _key = str(ctx.getChild(_count - 1))
+        if not self._ignore_keyword_case:
+            if self._uppercase_keywords:
+                _key = _key.upper()
+            else:
+                _key = _key.lower()
+        _ret_string = _key
+        return _ret_string
+
+    def get_value_pattern(self, ctx: ParserRuleContext):
+        """
+        :param ctx: the ParserRuleContext
+        :return formatted key closing string
+        :rtype str
+        """
+        _count = ctx.getChildCount()
+        if _count != 1:
+            raise Exception("Not a value ctx")
+        _key = str(ctx.getText())
+        if not self._ignore_value_case:
+            if self._uppercase_values:
+                _key = _key.upper()
+            else:
+                _key = _key.lower()
+        _ret_string = _key
+        return _ret_string
 
     # Enter a parse tree produced by tnsnamesParser#description_list.
     def enterDescription_list(self, ctx: tnsnamesParser.Description_listContext):
         super().enterDescription_list(ctx)
         self.append_current_line()
-        line_string = self.get_indents_string + "(" + tnsnamesParser.ruleNames[
-            tnsnamesParser.RULE_description_list] + "="
+        line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
         self._level += 1
         self._lines.append(line_string)
 
@@ -122,14 +176,13 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def exitDescription_list(self, ctx: tnsnamesParser.Description_listContext):
         super().exitDescription_list(ctx)
         self._level -= 1
-        line_string = self.get_indents_string + ")"
+        line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
         self._lines.append(line_string)
 
     # Enter a parse tree produced by tnsnamesParser#description.
     def enterDescription(self, ctx: tnsnamesParser.DescriptionContext):
         super().enterDescription(ctx)
-        line_string = self.get_indents_string + "(" + tnsnamesParser.ruleNames[
-            tnsnamesParser.RULE_description] + "="
+        line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
         self._level += 1
         self._lines.append(line_string)
 
@@ -137,7 +190,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def exitDescription(self, ctx: tnsnamesParser.DescriptionContext):
         super().exitDescription(ctx)
         self._level -= 1
-        line_string = self.get_indents_string + ")"
+        line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
         self._lines.append(line_string)
 
     # Enter a parse tree produced by tnsnamesParser#d_sdu.
@@ -165,8 +218,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Enter a parse tree produced by tnsnamesParser#address_list.
     def enterAddress_list(self, ctx: tnsnamesParser.Address_listContext):
         super().enterAddress_list(ctx)
-        line_string = self.get_indents_string + "(" + tnsnamesParser.ruleNames[
-            tnsnamesParser.RULE_address_list] + "="
+        line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
         self._level += 1
         self._lines.append(line_string)
 
@@ -174,7 +226,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def exitAddress_list(self, ctx: tnsnamesParser.Address_listContext):
         super().exitAddress_list(ctx)
         self._level -= 1
-        line_string = self.get_indents_string + ")"
+        line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
         self._lines.append(line_string)
 
     # Enter a parse tree produced by tnsnamesParser#al_load_balance.
@@ -190,19 +242,49 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Enter a parse tree produced by tnsnamesParser#address.
     def enterAddress(self, ctx: tnsnamesParser.AddressContext):
         super().enterAddress(ctx)
-        ret_string = self.get_indents_string + ctx.getText()
-        self._lines.append(ret_string)
+        _res_string = self.get_key_opening_pattern(ctx)
+        self._current_line += _res_string
 
     # Exit a parse tree produced by tnsnamesParser#address.
     def exitAddress(self, ctx: tnsnamesParser.AddressContext):
         super().exitAddress(ctx)
+        self._current_line += self.get_key_closing_pattern(ctx)
+        self.append_current_line()
+
+    # Enter a parse tree produced by tnsnamesParser#tcp_host.
+    def enterTcp_host(self, ctx: tnsnamesParser.Tcp_hostContext):
+        super().enterTcp_host(ctx)
+        self._current_line += self.get_key_opening_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#tcp_host.
+    def exitTcp_host(self, ctx: tnsnamesParser.Tcp_hostContext):
+        super().exitTcp_host(ctx)
+        self._current_line += self.get_key_closing_pattern(ctx)
 
     # Enter a parse tree produced by tnsnamesParser#host.
     def enterHost(self, ctx: tnsnamesParser.HostContext):
-        # ret_string = self.get_indents_string() + ctx.getRuleContext().parentCtx.getText()
-        # self._lines.append(ret_string)
         super().enterHost(ctx)
+        self._current_line += self.get_value_pattern(ctx)
 
     # Exit a parse tree produced by tnsnamesParser#host.
     def exitHost(self, ctx: tnsnamesParser.HostContext):
         super().exitHost(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#tcp_port.
+    def enterTcp_port(self, ctx: tnsnamesParser.Tcp_portContext):
+        super().enterTcp_port(ctx)
+        self._current_line += self.get_key_opening_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#tcp_port.
+    def exitTcp_port(self, ctx: tnsnamesParser.Tcp_portContext):
+        super().exitTcp_port(ctx)
+        self._current_line += self.get_key_closing_pattern(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#port.
+    def enterPort(self, ctx: tnsnamesParser.PortContext):
+        super().enterPort(ctx)
+        self._current_line += self.get_value_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#port.
+    def exitPort(self, ctx: tnsnamesParser.PortContext):
+        super().exitPort(ctx)
