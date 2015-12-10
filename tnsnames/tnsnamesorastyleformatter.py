@@ -167,7 +167,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Enter a parse tree produced by tnsnamesParser#description_list.
     def enterDescription_list(self, ctx: tnsnamesParser.Description_listContext):
         super().enterDescription_list(ctx)
-        self.append_current_line()
+        # self.append_current_line()
         line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
         self._level += 1
         self._lines.append(line_string)
@@ -322,3 +322,16 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         self._level -= 1
         line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
         self._lines.append(line_string)
+
+    def enterAlias_list(self, ctx: tnsnamesParser.Alias_listContext):
+        super().enterAlias_list(ctx)
+        self._lines.append(ctx.getText() + '=')
+        self._level = 1
+
+    def exitAlias_list(self, ctx: tnsnamesParser.Alias_listContext):
+        super().exitAlias_list(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#alias.
+    def enterAlias(self, ctx: tnsnamesParser.AliasContext):
+        super().enterAlias(ctx)
+        # self._current_line += ctx.getText()
