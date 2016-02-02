@@ -1,6 +1,7 @@
 import argparse
+from io import StringIO
 
-from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
+from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker, InputStream
 
 from tnsnames.format import Format
 from tnsnames.tnsnamesLexer import tnsnamesLexer
@@ -27,28 +28,43 @@ def main():
                         default=False)
 
     args = parser.parse_args()
-    if args.format == Format.oracle.name:
-        _listener = TnsnameOraStyleFormatter()
-        _listener.set_uppercase_keywords(not args.lowerkeys)
-        _listener.set_uppercase_value(not args.lowervalues)
-        _listener.set_ignore_keyword_case(not args.handlekeycase)
-        _listener.set_ignore_value_case(not args.handlevaluecase)
 
-    else:
-        _listener = TnsnameLineFormatter()
+    listener_ora_style = TnsnameOraStyleFormatter()
+    listener_ora_style.set_uppercase_keywords(not args.lowerkeys)
+    listener_ora_style.set_uppercase_value(not args.lowervalues)
+    listener_ora_style.set_ignore_keyword_case(not args.handlekeycase)
+    listener_ora_style.set_ignore_value_case(not args.handlevaluecase)
 
     input_file_stream = FileStream(args.tnsnamesFile)
     lexer = tnsnamesLexer(input_file_stream)
-    stream = CommonTokenStream(lexer)
-    parser = tnsnamesParser(stream)
-    tree = parser.tnsnames()
+    ora_stream = CommonTokenStream(lexer)
+    tns_parser = tnsnamesParser(ora_stream)
+    tree = tns_parser.tnsnames()
 
     walker = ParseTreeWalker()
-    walker.walk(_listener, tree)
+    walker.walk(listener_ora_style, tree)
 
-    for line in _listener.get_lines:
-        print(line)
+    buf = StringIO()
 
+    if args.format == Format.oracle.name:
+        for line in listener_ora_style.get_lines:
+            print(line)
+        exit(0)
+
+    for line in listener_ora_style.get_lines:
+        buf.write(line)
+
+    listener_line_style = TnsnameLineFormatter()
+    input_text_stream = InputStream(buf.getvalue())
+    line_lexer = tnsnamesLexer(input_text_stream)
+    line_stream = CommonTokenStream(line_lexer)
+    line_parser = tnsnamesParser(line_stream)
+    tree = line_parser.tnsnames()
+
+    walker.walk(listener_line_style, tree)
+
+    for line2 in listener_line_style.get_lines:
+        print(line2)
 
 if __name__ == '__main__':
     main()
