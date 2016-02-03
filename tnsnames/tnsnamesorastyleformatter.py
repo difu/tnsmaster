@@ -261,6 +261,15 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         super().exitTcp_host(ctx)
         self._current_line += self.get_key_closing_pattern(ctx)
 
+    # Enter a parse tree produced by tnsnamesParser#tcp_protocol.
+    def enterTcp_protocol(self, ctx: tnsnamesParser.Tcp_protocolContext):
+        self._current_line += self.get_value_pattern(ctx)
+        super().enterTcp_protocol(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#tcp_protocol.
+    def exitTcp_protocol(self, ctx: tnsnamesParser.Tcp_protocolContext):
+        super().exitTcp_protocol(ctx)
+
     # Enter a parse tree produced by tnsnamesParser#host.
     def enterHost(self, ctx: tnsnamesParser.HostContext):
         super().enterHost(ctx)
