@@ -344,3 +344,21 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def enterAlias(self, ctx: tnsnamesParser.AliasContext):
         super().enterAlias(ctx)
         # self._current_line += ctx.getText()
+
+    # Enter a parse tree produced by tnsnamesParser#spx_protocol.
+    def enterSpx_protocol(self, ctx: tnsnamesParser.Spx_protocolContext):
+        super().enterSpx_protocol(ctx)
+        self._current_line += self.get_value_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#spx_protocol.
+    def exitSpx_protocol(self, ctx: tnsnamesParser.Spx_protocolContext):
+        super().exitSpx_protocol(ctx)
+
+    # Enter a parse tree produced by tnsnamesParser#nmp_protocol.
+    def enterNmp_protocol(self, ctx: tnsnamesParser.Nmp_protocolContext):
+        super().enterNmp_protocol(ctx)
+        self._current_line += self.get_value_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#nmp_protocol.
+    def exitNmp_protocol(self, ctx: tnsnamesParser.Nmp_protocolContext):
+        super().exitNmp_protocol(ctx)
