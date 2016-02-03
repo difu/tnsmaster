@@ -3,10 +3,9 @@ from unittest import TestCase
 
 from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
-from tnsnames.tnserrorlistenerexception import TnsErrorListenerException
 from tnsnames.tnsnamesLexer import tnsnamesLexer
-from tnsnames.tnsnamesParser import tnsnamesParser
 from tnsnames.tnsnameslineformatter import TnsnameLineFormatter
+from tnsnames.tnsnamesparserewithexception import TnsNamesParserWithException
 
 __author__ = 'dirkfuchs'
 
@@ -22,13 +21,10 @@ class TestTnsFormatter(TestCase):
     def test_bad_tnsnames_file(self):
         tnsnames_file = '{0}/testFiles/tnsnames_false.ora'.format(self._script_path)
         input_file_stream = FileStream(tnsnames_file)
-        errror_listener_ex = TnsErrorListenerException()
 
         lexer = tnsnamesLexer(input_file_stream)
         stream = CommonTokenStream(lexer)
-        parser = tnsnamesParser(stream)
-        parser._listeners.clear()
-        parser.addErrorListener(errror_listener_ex)
+        parser = TnsNamesParserWithException(stream)
         with self.assertRaisesRegexp(Exception, "Syntax error") as cm:
             tree = parser.tnsnames()
 
@@ -37,7 +33,7 @@ class TestTnsFormatter(TestCase):
 
         lexer = tnsnamesLexer(input_file_stream)
         stream = CommonTokenStream(lexer)
-        parser = tnsnamesParser(stream)
+        parser = TnsNamesParserWithException(stream)
         tree = parser.tnsnames()
 
         listener = TnsnameLineFormatter()

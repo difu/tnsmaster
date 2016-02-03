@@ -5,9 +5,9 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker, InputStream
 
 from tnsnames.format import Format
 from tnsnames.tnsnamesLexer import tnsnamesLexer
-from tnsnames.tnsnamesParser import tnsnamesParser
 from tnsnames.tnsnameslineformatter import TnsnameLineFormatter
 from tnsnames.tnsnamesorastyleformatter import TnsnameOraStyleFormatter
+from tnsnames.tnsnamesparserewithexception import TnsNamesParserWithException
 
 
 def main():
@@ -35,11 +35,20 @@ def main():
     listener_ora_style.set_ignore_keyword_case(not args.handlekeycase)
     listener_ora_style.set_ignore_value_case(not args.handlevaluecase)
 
-    input_file_stream = FileStream(args.tnsnamesFile)
+    try:
+        input_file_stream = FileStream(args.tnsnamesFile)
+    except FileNotFoundError:
+        print(args.tnsnamesFile + " not found!")
+        exit(1)
+
     lexer = tnsnamesLexer(input_file_stream)
     ora_stream = CommonTokenStream(lexer)
-    tns_parser = tnsnamesParser(ora_stream)
-    tree = tns_parser.tnsnames()
+    tns_parser = TnsNamesParserWithException(ora_stream)
+    try:
+        tree = tns_parser.tnsnames()
+    except Exception as ex:
+        print("Error while parsing: " + ex.__str__())
+        exit(1)
 
     walker = ParseTreeWalker()
     walker.walk(listener_ora_style, tree)
@@ -58,8 +67,12 @@ def main():
     input_text_stream = InputStream(buf.getvalue())
     line_lexer = tnsnamesLexer(input_text_stream)
     line_stream = CommonTokenStream(line_lexer)
-    line_parser = tnsnamesParser(line_stream)
-    tree = line_parser.tnsnames()
+    line_parser = TnsNamesParserWithException(line_stream)
+    try:
+        tree = line_parser.tnsnames()
+    except Exception as ex:
+        print("Error while parsing: " + ex.__str__())
+        exit(1)
 
     walker.walk(listener_line_style, tree)
 
