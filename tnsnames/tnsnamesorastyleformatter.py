@@ -345,6 +345,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         super().enterAlias(ctx)
         # self._current_line += ctx.getText()
 
+    # SPX Protocol stuff
     # Enter a parse tree produced by tnsnamesParser#spx_protocol.
     def enterSpx_protocol(self, ctx: tnsnamesParser.Spx_protocolContext):
         super().enterSpx_protocol(ctx)
@@ -354,6 +355,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def exitSpx_protocol(self, ctx: tnsnamesParser.Spx_protocolContext):
         super().exitSpx_protocol(ctx)
 
+    # NMP Protocol Stuff
     # Enter a parse tree produced by tnsnamesParser#nmp_protocol.
     def enterNmp_protocol(self, ctx: tnsnamesParser.Nmp_protocolContext):
         super().enterNmp_protocol(ctx)
@@ -362,3 +364,13 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Exit a parse tree produced by tnsnamesParser#nmp_protocol.
     def exitNmp_protocol(self, ctx: tnsnamesParser.Nmp_protocolContext):
         super().exitNmp_protocol(ctx)
+
+    # BEQ Protocol Stuff
+    # Enter a parse tree produced by tnsnamesParser#beq_protocol.
+    def enterBeq_protocol(self, ctx: tnsnamesParser.Beq_protocolContext):
+        super().enterBeq_protocol(ctx)
+        self._current_line += self.get_value_pattern(ctx)
+
+    # Exit a parse tree produced by tnsnamesParser#beq_protocol.
+    def exitBeq_protocol(self, ctx: tnsnamesParser.Beq_protocolContext):
+        super().exitBeq_protocol(ctx)
