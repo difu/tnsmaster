@@ -106,7 +106,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
                     _value = _value.lower()
             _ret_string = str(ctx.getChild(0)) + _key + str(ctx.getChild(2)) + _value + str(ctx.getChild(4))
             return _ret_string
-        raise Exception("Not a key value ctx")
+        raise Exception("Not a key value ctx: " + ctx.getText())
 
     def get_key_opening_pattern(self, ctx: ParserRuleContext):
         """
@@ -117,7 +117,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         """
         _count = ctx.getChildCount()
         if _count < 5:
-            raise Exception("Not a key opening ctx")
+            raise Exception("Not a key opening ctx: " + ctx.getText())
         _key = str(ctx.getChild(1))
         if not self._ignore_keyword_case:
             if self._uppercase_keywords:
@@ -154,7 +154,7 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
         """
         _count = ctx.getChildCount()
         if _count != 1:
-            raise Exception("Not a value ctx")
+            raise Exception("Not a value ctx: " + ctx.getText())
         _key = str(ctx.getText())
         if not self._ignore_value_case:
             if self._uppercase_values:
@@ -298,6 +298,11 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     def exitPort(self, ctx: tnsnamesParser.PortContext):
         super().exitPort(ctx)
 
+    # Enter a parse tree produced by tnsnamesParser#ipc_protocol.
+    def enterIpc_protocol(self, ctx: tnsnamesParser.Ipc_protocolContext):
+        super().enterIpc_protocol(ctx)
+        self._current_line += self.get_value_pattern(ctx)
+
     # Enter a parse tree produced by tnsnamesParser#cd_service_name.
     def enterCd_service_name(self, ctx: tnsnamesParser.Cd_service_nameContext):
         super().enterCd_service_name(ctx)
@@ -374,3 +379,29 @@ class TnsnameOraStyleFormatter(TnsnamesFormatter):
     # Exit a parse tree produced by tnsnamesParser#beq_protocol.
     def exitBeq_protocol(self, ctx: tnsnamesParser.Beq_protocolContext):
         super().exitBeq_protocol(ctx)
+
+    # Listener Stuff
+    # Enter a parse tree produced by tnsnamesParser#lsnr_entry.
+    def enterLsnr_entry(self, ctx: tnsnamesParser.Lsnr_entryContext):
+        super().enterLsnr_entry(ctx)
+        self._level = 1
+        line_string = str(ctx.getChild(0).getText()) + str(ctx.getChild(1))
+        self._lines.append(line_string)
+        self._level += 1
+
+    # Exit a parse tree produced by tnsnamesParser#lsnr_entry.
+    def exitLsnr_entry(self, ctx: tnsnamesParser.Lsnr_entryContext):
+        super().exitLsnr_entry(ctx)
+        self._level -= 1
+
+    def enterLsnr_description(self, ctx: tnsnamesParser.Lsnr_descriptionContext):
+        super().enterLsnr_description(ctx)
+        line_string = self.get_indents_string + self.get_key_opening_pattern(ctx)
+        self._level += 1
+        self._lines.append(line_string)
+
+    def exitLsnr_description(self, ctx: tnsnamesParser.Lsnr_descriptionContext):
+        super().exitLsnr_description(ctx)
+        self._level -= 1
+        line_string = self.get_indents_string + self.get_key_closing_pattern(ctx)
+        self._lines.append(line_string)
