@@ -11,6 +11,8 @@ Travis Status
 
 .. image:: https://travis-ci.org/difu/tnsmaster.svg
     :target: https://travis-ci.org/difu/tnsmaster
+.. image:: https://coveralls.io/repos/github/difu/tnsmaster/badge.svg?branch=master
+    :target: https://coveralls.io/github/difu/tnsmaster?branch=master
 
 .. important::
   At the moment ``tnsmaster`` is in the development phase. Not all features are
