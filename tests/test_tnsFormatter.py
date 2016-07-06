@@ -5,6 +5,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 
 from tnsnames.tnsnamesLexer import tnsnamesLexer
 from tnsnames.tnsnameslineformatter import TnsnameLineFormatter
+from tnsnames.tnsnamesorastyleformatter import TnsnameOraStyleFormatter
 from tnsnames.tnsnamesparserewithexception import TnsNamesParserWithException
 
 __author__ = 'dirkfuchs'
@@ -40,3 +41,16 @@ class TestTnsFormatter(TestCase):
         walker = ParseTreeWalker()
         walker.walk(listener, tree)
         assert len(listener.get_lines) == 6
+
+    def test_format_orastyle(self):
+        input_file_stream = FileStream(self._tnsnames_file)
+
+        lexer = tnsnamesLexer(input_file_stream)
+        stream = CommonTokenStream(lexer)
+        parser = TnsNamesParserWithException(stream)
+        tree = parser.tnsnames()
+
+        listener = TnsnameOraStyleFormatter()
+        walker = ParseTreeWalker()
+        walker.walk(listener, tree)
+        assert len(listener.get_lines) == 51
