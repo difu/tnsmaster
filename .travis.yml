@@ -13,4 +13,4 @@ script:
     python3 -m unittest discover tests/
     coverage run -m unittest discover tests/
 after_success:
-  coveralls
+    coveralls
