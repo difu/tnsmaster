@@ -8,6 +8,6 @@ install:
     pip install -r requirements.txt coveralls
 script:
     - python3 -m unittest discover tests/
-    - coverage run -m unittest discover tests/
+    - coverage run  --omit /home/travis/virtualenv/ --source ./ -m unittest discover tests/
 after_success:
     coveralls
