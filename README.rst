@@ -43,40 +43,36 @@ Usage
 Quickstart
 ----------
 
-- To format a tnsnames.ora file with default settings:
-
- .. code-block::
+- To format a tnsnames.ora file with default settings::
 
     python3 formatter.py path/to/tnsnames.ora
 
- A neat indented tnsnnames.ora will be printed to stdout.
+  A neat indented tnsnnames.ora will be printed to stdout.
 
-- To extract all aliases from a tnsnames.ora:
-
- .. code-block::
+- To extract all aliases from a tnsnames.ora::
 
     python3 aliases.py path/to/tnsnames.ora
 
- All aliases will be printed to stdout.
+  All aliases will be printed to stdout.
 
 
 Semantic verification assist
 ----------------------------
 
-    Consider this address list of a tnsnames.ora file::
+Consider this address list of a tnsnames.ora file::
 
-        ...
-                (load_balance=yes)
-                (address_list=
-                    (address=(protocol=tcp)(host=host1.domain.foo)(port=1522))
-                    (address=(protocol=tcp)(host=host2.domain.foo)(port=1524))
-                    (address=(protocol=tcp)(host=host3.someotherdomain.foo)(port=1522))
-                    (address=(protocol=tcp)(host=host1.someotherdomain.foo)(port=9210))
-                    (address=(protocol=tcp)(host=host2.farawaydomain.foo)(port=1522))
-                )
-        ...
+    ...
+            (load_balance=yes)
+            (address_list=
+                (address=(protocol=tcp)(host=host1.domain.foo)(port=1522))
+                (address=(protocol=tcp)(host=host2.domain.foo)(port=1524))
+                (address=(protocol=tcp)(host=host3.someotherdomain.foo)(port=1522))
+                (address=(protocol=tcp)(host=host1.someotherdomain.foo)(port=9210))
+                (address=(protocol=tcp)(host=host2.farawaydomain.foo)(port=1522))
+            )
+    ...
 
-    It is hard to test if all connections are correct and the destination can be
-    reached, because the client will choose an address randomly. ``tnsmaster`` will
-    create a single tnsnames file for each address. You can now connect to this
-    specific destination and test if it is reachable.
+It is hard to test if all connections are correct and the destination can be
+reached, because the client will choose an address randomly. ``tnsmaster`` will
+create a single tnsnames file for each address. You can now connect to this
+specific destination and test if it is reachable.
