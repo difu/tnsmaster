@@ -11,8 +11,4 @@ script:
     python3 -m unittest discover tests/
     coverage run -m unittest discover tests/
 after_success:
-<<<<<<< HEAD
     coveralls
-=======
-    coveralls
->>>>>>> ec2272810bfd82481bb5e8713137b6c9a55d6bcd
